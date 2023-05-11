@@ -19,6 +19,7 @@ const getAndStoreUserInfo = async (code: string, sessionId: string) => {
     sgid: sub,
   };
   store.set(sessionId, newSession);
+
   return newSession;
 };
 

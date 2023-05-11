@@ -1,16 +1,14 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { sgidClient } from "@/lib/sgidClient";
-import { store } from "@/lib/store";
 import { NextSSRPage } from "@/types";
+import { cookies } from "next/headers";
+import { store } from "@/lib/store";
 
 const handleLogin = async (state: string) => {
-  // Get session ID from cookie
   const sessionId = cookies().get("sessionId")?.value || "";
 
-  // Handle edge case
   if (!sessionId) {
-    redirect("/");
+    throw new Error("Session ID not found in browser's cookies");
   }
 
   // Store state in memory
