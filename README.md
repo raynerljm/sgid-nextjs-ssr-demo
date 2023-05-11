@@ -10,6 +10,8 @@ Before you can run the development server, you will have to register your client
 
 Copy the `.env.example` file, rename it to `.env`, and fill in your credentials obtained during registration.
 
+Replace the `redirectUri` in `src/lib/sgidClient.ts` with `http://localhost:3000/success`
+
 Then, run the server by running:
 
 ```bash

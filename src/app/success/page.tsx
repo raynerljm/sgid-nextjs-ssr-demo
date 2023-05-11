@@ -3,8 +3,13 @@ import { sgidClient } from "@/lib/sgidClient";
 import { cookies } from "next/headers";
 
 const getAndStoreUserInfo = async (code: string, sessionId: string) => {
+  // Exchange auth code for access token
   const { accessToken } = await sgidClient.callback(code);
+
+  // Request user info with acecss token
   const { data, sub } = await sgidClient.userinfo(accessToken);
+
+  // Store userInfo and sgID in memory
   const newSession = {
     ...store.get(sessionId),
     userInfo: data,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { store } from "@/lib/store";
 
 export function GET(req: NextRequest) {
+  // Retrieve session ID from cookies
   const sessionId = req.cookies.get("sessionId")?.value;
 
   // Delete session from memory

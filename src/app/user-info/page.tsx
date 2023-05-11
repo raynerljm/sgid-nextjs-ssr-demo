@@ -2,6 +2,7 @@ import { store } from "@/lib/store";
 import { cookies } from "next/headers";
 
 const getUserInfo = async (sessionId: string) => {
+  // Retrieve session from memory
   const session = store.get(sessionId);
   if (!session) {
     throw new Error("No session found");
