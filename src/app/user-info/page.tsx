@@ -1,5 +1,6 @@
 import { store } from "@/lib/store";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 const getUserInfo = async (sessionId: string) => {
   // Retrieve session from memory
@@ -37,12 +38,13 @@ export default async function LoggedIn() {
           </div>
         ))}
       </div>
-      <a
-        href="/api/logout"
+      <Link
+        prefetch={false}
+        href="/logout"
         className="w-full text-white cursor-pointer rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center mt-8"
       >
         Logout
-      </a>
+      </Link>
     </main>
   );
 }
