@@ -18,12 +18,16 @@ export async function middleware(req: NextRequest) {
       store.set(sessionId, {});
 
       // Set session ID in cookie
-      const res = NextResponse.next();
-      res.cookies.set({
+      const loginRes = NextResponse.next();
+      loginRes.cookies.set({
         name: "sessionId",
         value: sessionId,
         httpOnly: true,
       });
-      return res;
+      return loginRes;
+    case "/logout":
+      const logoutRes = NextResponse.next();
+      logoutRes.cookies.delete("sessionId");
+      return logoutRes;
   }
 }
