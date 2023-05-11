@@ -37,7 +37,7 @@ export default async function LoggedIn() {
         ))}
       </div>
       <a
-        href="/logout"
+        href="/api/logout"
         className="w-full text-white cursor-pointer rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center mt-8"
       >
         Logout
