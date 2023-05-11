@@ -36,7 +36,7 @@ const LoginWithIceCream = () => {
             onClick={() => setState(flavour)}
             className="gap-2 flex cursor-pointer hover:bg-white hover:bg-opacity-10 p-1 rounded-md"
           >
-            <input type="radio" checked={state === flavour} />
+            <input type="radio" defaultChecked={state === flavour} />
             {flavour}
           </div>
         ))}
