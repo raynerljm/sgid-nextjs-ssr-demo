@@ -3,15 +3,17 @@ import { sgidClient } from "@/lib/sgidClient";
 import { cookies } from "next/headers";
 
 const getAndStoreUserInfo = async (code: string, sessionId: string) => {
+  const session = store.get(sessionId);
+
   // Exchange auth code for access token
-  const { accessToken } = await sgidClient.callback(code);
+  const { accessToken } = await sgidClient.callback(code, session?.nonce);
 
   // Request user info with acecss token
   const { data, sub } = await sgidClient.userinfo(accessToken);
 
   // Store userInfo and sgID in memory
   const newSession = {
-    ...store.get(sessionId),
+    ...session,
     userInfo: data,
     sgid: sub,
   };
@@ -38,7 +40,7 @@ export default async function Callback({
   const { state, userInfo, sgid } = await getAndStoreUserInfo(code, sessionId);
 
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center">
+    <main className="min-h-screen flex flex-col justify-center items-center px-4">
       <div className="bg-white rounded-md py-12 px-8 flex flex-col max-w-lg min-w-fit">
         <div className="text-xl mx-auto text-center mb-8">
           Logged in successfully!

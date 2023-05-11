@@ -23,7 +23,7 @@ export default async function LoggedIn() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center">
+    <main className="min-h-screen flex flex-col justify-center items-center px-4">
       <div className="bg-white rounded-md py-12 px-8 flex flex-col max-w-lg min-w-fit">
         <div className="text-xl mx-auto text-center mb-8">User Info</div>
         <div className="w-full grid grid-cols-2 py-2 gap-4">

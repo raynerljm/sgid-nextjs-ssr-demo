@@ -9,7 +9,7 @@ export default function Error({ error }: { error: Error }) {
   }, [error]);
 
   return (
-    <main className="min-h-screen flex flex-col justify-center items-center">
+    <main className="min-h-screen flex flex-col justify-center items-center px-4">
       <div className="bg-white rounded-md py-12 px-8 flex flex-col max-w-lg min-w-fit">
         <h2 className="mb-8 text-xl text-center mx-auto">
           Something went wrong!

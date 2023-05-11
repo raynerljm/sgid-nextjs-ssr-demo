@@ -10,15 +10,14 @@ export function GET(req: NextRequest) {
   // Retrieve state form query params
   const state = new URL(req.url).searchParams.get("state");
 
-  // Store state in memory
-  store.set(sessionId, { state: String(state) });
-
   // Generate authorization url
-  const { url } = sgidClient.authorizationUrl(
+  const { url, nonce } = sgidClient.authorizationUrl(
     String(state),
-    "openid myinfo.name",
-    null
+    "openid myinfo.name"
   );
+
+  // Store state in memory
+  store.set(sessionId, { state: String(state), nonce });
 
   // Redirect to authorization url
   const res = NextResponse.redirect(url);

@@ -1,5 +1,6 @@
 type Session = {
   state?: string;
+  nonce?: string;
   codeVerifier?: string;
   accessToken?: string;
   userInfo?: Record<string, string>;
