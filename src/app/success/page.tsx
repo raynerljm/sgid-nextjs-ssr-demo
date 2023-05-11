@@ -4,12 +4,13 @@ import { cookies } from "next/headers";
 
 const getAndStoreUserInfo = async (code: string, sessionId: string) => {
   const { accessToken } = await sgidClient.callback(code);
-  const { data } = await sgidClient.userinfo(accessToken);
+  const { data, sub } = await sgidClient.userinfo(accessToken);
   const newSession = {
     ...store.get(sessionId),
-    data,
+    userInfo: data,
+    sgid: sub,
   };
-  store.set(sessionId, { ...store.get(sessionId), data });
+  store.set(sessionId, newSession);
   return newSession;
 };
 
@@ -29,23 +30,47 @@ export default async function Callback({
     throw new Error("Session ID not found in browser's cookies");
   }
 
-  const { state, data: userInfo } = await getAndStoreUserInfo(code, sessionId);
+  const { state, userInfo, sgid } = await getAndStoreUserInfo(code, sessionId);
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center">
-      <div className="bg-white bg-opacity-20 rounded-md p-4 flex flex-col gap-4">
-        <div className="text-white">Successfully logged in!</div>
-
-        <div>
-          <div>Ice cream flavour:</div>
-          <div>{state}</div>
-        </div>
-        <div>
-          <div>User info retrieved:</div>
-          <div>{JSON.stringify(userInfo)}</div>
+      <div className="bg-white rounded-md py-12 px-8 flex flex-col max-w-lg min-w-fit">
+        <div className="text-xl mx-auto text-center mb-8">
+          Logged in successfully!
         </div>
 
-        <a href="/user-info">View user info</a>
+        <div className="w-full grid grid-cols-2 py-2 gap-4">
+          <div className="w-full whitespace-nowrap">sgID</div>
+          <div className="w-full">{sgid}</div>
+        </div>
+        {Object.entries(userInfo).map(([field, value]) => (
+          <div className="w-full grid grid-cols-2 py-2 gap-4" key={field}>
+            <div className="w-full whitespace-nowrap">{field}</div>
+            <div className="w-full">{value}</div>
+          </div>
+        ))}
+        <div className="w-full grid grid-cols-2 py-2 gap-4">
+          <div className="w-full whitespace-nowrap">
+            Favourite ice cream flavour
+          </div>
+          <div className="w-full">{state}</div>
+        </div>
+
+        <div className="flex gap-4 mt-8">
+          <a
+            href="/logout"
+            className="w-full text-white cursor-pointer rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center"
+          >
+            Logout
+          </a>
+
+          <a
+            href="/user-info"
+            className="w-full text-white cursor-pointe rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center"
+          >
+            View user info
+          </a>
+        </div>
       </div>
     </main>
   );

@@ -2,7 +2,8 @@ type Session = {
   state?: string;
   codeVerifier?: string;
   accessToken?: string;
-  data?: any;
+  userInfo?: Record<string, string>;
+  sgid?: string;
 };
 
 const store = new Map<string, Session>();
