@@ -37,14 +37,14 @@ export default async function LoggedIn() {
             <div className="w-full">{value}</div>
           </div>
         ))}
+        <Link
+          prefetch={false}
+          href="/logout"
+          className="w-full text-white cursor-pointer rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center mt-8"
+        >
+          Logout
+        </Link>
       </div>
-      <Link
-        prefetch={false}
-        href="/logout"
-        className="w-full text-white cursor-pointer rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center mt-8"
-      >
-        Logout
-      </Link>
     </main>
   );
 }
