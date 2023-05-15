@@ -1,6 +1,7 @@
 import { store } from "@/lib/store";
 import { sgidClient } from "@/lib/sgidClient";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 const getAndStoreUserInfo = async (code: string, sessionId: string) => {
   const session = store.get(sessionId);
@@ -18,6 +19,7 @@ const getAndStoreUserInfo = async (code: string, sessionId: string) => {
     sgid: sub,
   };
   store.set(sessionId, newSession);
+
   return newSession;
 };
 
@@ -28,7 +30,6 @@ export default async function Callback({
 }) {
   const code = searchParams?.code;
   const sessionId = cookies().get("sessionId")?.value;
-
   if (!code) {
     throw new Error(
       "Authorization code is not present in the url search params"
@@ -64,19 +65,19 @@ export default async function Callback({
         </div>
 
         <div className="flex gap-4 mt-8">
-          <a
-            href="/api/logout"
+          <Link
+            prefetch={false}
+            href="/logout"
             className="w-full text-white cursor-pointer rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center"
           >
             Logout
-          </a>
-
-          <a
+          </Link>
+          <Link
             href="/user-info"
             className="w-full text-white cursor-pointe rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-center"
           >
             View user info
-          </a>
+          </Link>
         </div>
       </div>
     </main>
