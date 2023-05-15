@@ -6,8 +6,8 @@ const sgidClient = new SgidClient({
   privateKey: String(process.env.SGID_PRIVATE_KEY).replace(/\\n/g, "\n") || "",
   redirectUri:
     process.env.NEXT_ENV !== "development"
-      ? "https://sgid-nextjs-csr-demo.vercel.app/api/callback"
-      : "http://localhost:3000/api/callback",
+      ? "https://sgid-nextjs-ssr-demo.vercel.app/success"
+      : "http://localhost:3000/success",
 });
 
 export { sgidClient };
