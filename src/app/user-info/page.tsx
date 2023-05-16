@@ -18,8 +18,8 @@ export default async function LoggedIn() {
     throw new Error("Session ID not found in browser's cookies");
   }
 
-  const { sgid, userInfo } = await getUserInfo(sessionId);
-  if (!sgid || !userInfo) {
+  const { sub, userInfo } = await getUserInfo(sessionId);
+  if (!sub || !userInfo) {
     throw new Error("User has not authenticated");
   }
 
@@ -29,7 +29,7 @@ export default async function LoggedIn() {
         <div className="text-xl mx-auto text-center mb-8">User Info</div>
         <div className="w-full grid grid-cols-2 py-2 gap-4">
           <div className="w-full whitespace-nowrap">sgID</div>
-          <div className="w-full">{sgid}</div>
+          <div className="w-full">{sub}</div>
         </div>
         {Object.entries(userInfo).map(([field, value]) => (
           <div className="w-full grid grid-cols-2 py-2 gap-4" key={field}>

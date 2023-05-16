@@ -6,21 +6,38 @@ import Link from "next/link";
 const getAndStoreUserInfo = async (code: string, sessionId: string) => {
   const session = store.get(sessionId);
 
+  if (!session) {
+    throw new Error("Session not found");
+  }
+
+  const { nonce, codeVerifier } = session;
+
+  if (!codeVerifier) {
+    throw new Error("Code verifier not found");
+  }
+
   // Exchange auth code for access token
-  const { accessToken } = await sgidClient.callback(code, session?.nonce);
+  const { accessToken, sub } = await sgidClient.callback({
+    code,
+    nonce,
+    codeVerifier,
+  });
 
   // Request user info with acecss token
-  const { data, sub } = await sgidClient.userinfo(accessToken);
+  const { data } = await sgidClient.userinfo({
+    accessToken,
+    sub,
+  });
 
   // Store userInfo and sgID in memory
-  const newSession = {
+  const updatedSession = {
     ...session,
     userInfo: data,
-    sgid: sub,
+    sub,
   };
-  store.set(sessionId, newSession);
+  store.set(sessionId, updatedSession);
 
-  return newSession;
+  return updatedSession;
 };
 
 export default async function Callback({
@@ -38,7 +55,7 @@ export default async function Callback({
     throw new Error("Session ID not found in browser's cookies");
   }
 
-  const { state, userInfo, sgid } = await getAndStoreUserInfo(code, sessionId);
+  const { state, userInfo, sub } = await getAndStoreUserInfo(code, sessionId);
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center px-4">
@@ -49,7 +66,7 @@ export default async function Callback({
 
         <div className="w-full grid grid-cols-2 py-2 gap-4">
           <div className="w-full whitespace-nowrap">sgID</div>
-          <div className="w-full">{sgid}</div>
+          <div className="w-full">{sub}</div>
         </div>
         {Object.entries(userInfo).map(([field, value]) => (
           <div className="w-full grid grid-cols-2 py-2 gap-4" key={field}>
